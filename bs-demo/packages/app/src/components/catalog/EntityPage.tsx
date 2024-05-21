@@ -54,6 +54,8 @@ import {
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 
+import {DemoPluginEntityContent} from '@internal/backstage-plugin-demo-plugin';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -354,6 +356,10 @@ const systemPage = (
         ]}
         unidirectional={false}
       />
+    </EntityLayout.Route>
+    {/* adding a new tab to the system view*/}
+    <EntityLayout.Route path="/custom-route" title="CustomTitle">
+      <DemoPluginEntityContent />
     </EntityLayout.Route>
   </EntityLayout>
 );

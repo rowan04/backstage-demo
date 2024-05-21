@@ -40,4 +40,6 @@ backend.add(import('@backstage/plugin-search-backend-module-techdocs/alpha'));
 
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 
+backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
+
 backend.start();
