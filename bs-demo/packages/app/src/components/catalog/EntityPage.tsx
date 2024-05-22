@@ -54,7 +54,14 @@ import {
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 
-import {DemoPluginEntityContent} from '@internal/backstage-plugin-demo-plugin';
+// import { DemoPluginEntityContent } from '@internal/backstage-plugin-demo-plugin';
+// import { DemoPluginPage } from '@internal/backstage-plugin-demo-plugin';
+
+import {
+  EntityCircleCIContent,
+  isCircleCIAvailable
+} from '@circleci/backstage-plugin';
+
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -76,7 +83,7 @@ const cicdContent = (
       </EntitySwitch.Case>
      */}
 
-    <EntitySwitch.Case>
+    <EntitySwitch.Case if={isCircleCIAvailable}>
       <EmptyState
         title="No CI/CD available for this entity"
         missing="info"
@@ -358,9 +365,10 @@ const systemPage = (
       />
     </EntityLayout.Route>
     {/* adding a new tab to the system view*/}
-    <EntityLayout.Route path="/custom-route" title="CustomTitle">
-      <DemoPluginEntityContent />
-    </EntityLayout.Route>
+    {/* <EntityLayout.Route path="/custom-route" title="CustomTitle"> */}
+      {/* <DemoPluginEntityContent /> */}
+      {/* <DemoPluginPage />
+    </EntityLayout.Route> */}
   </EntityLayout>
 );
 
