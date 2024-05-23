@@ -99,6 +99,15 @@ catalog:
       rules:
         - allow: [User, Group]
 
+  providers:
+    githubOrg:
+      id: cedadev
+      githubUrl: https://github.com/cedadev
+      orgs: ['cedadev']
+      schedule:
+        frequency: { hours: 1 }
+        timeout: { minutes: 50 }
+
     ## Uncomment these lines to add more example data
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
