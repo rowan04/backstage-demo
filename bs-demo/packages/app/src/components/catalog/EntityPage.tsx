@@ -62,6 +62,11 @@ import {
   isCircleCIAvailable
 } from '@circleci/backstage-plugin';
 
+import { 
+  EntityGithubPullRequestsContent,
+  EntityGithubPullRequestsOverviewCard,
+} from '@roadiehq/backstage-plugin-github-pull-requests';
+
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -146,6 +151,9 @@ const overviewContent = (
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
+    <Grid item md={6}>
+      <EntityGithubPullRequestsOverviewCard />
+    </Grid>
   </Grid>
 );
 
@@ -183,6 +191,10 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
+      <EntityGithubPullRequestsContent />
     </EntityLayout.Route>
   </EntityLayout>
 );

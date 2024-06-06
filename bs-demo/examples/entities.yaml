@@ -47,6 +47,6 @@ metadata:
 spec:
   type: url
   targets:
-    - https://github.com/cedadev/rowan-backstage-testing/blob/master/catalog-info.yaml
+    - https://github.com/cedadev/rowan-backstage-service-test/blob/master/catalog-info.yaml
     - https://github.com/djspstfc/fake-library/blob/main/catalogue-info.yaml
     - https://github.com/cedadev/rowan-backstage-library/blob/main/catalog-info.yaml
