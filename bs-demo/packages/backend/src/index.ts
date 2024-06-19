@@ -44,4 +44,12 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 
+import {
+  gitlabPlugin,
+  catalogPluginGitlabFillerProcessorModule,
+} from '@immobiliarelabs/backstage-plugin-gitlab-backend';
+
+backend.add(gitlabPlugin);
+backend.add(catalogPluginGitlabFillerProcessorModule);
+
 backend.start();

@@ -50,3 +50,14 @@ spec:
     - https://github.com/cedadev/rowan-backstage-service-test/blob/master/catalog-info.yaml
     - https://github.com/djspstfc/fake-library/blob/main/catalogue-info.yaml
     - https://github.com/cedadev/rowan-backstage-library/blob/main/catalog-info.yaml
+    - https://github.com/cedadev/backstage-template-created-repo-4/blob/master/catalog-info.yaml
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cedadev-gitlab
+  annotations:
+    gitlab.com/project-slug: cedadev
+spec:
+  type: service
+  owner: developers
