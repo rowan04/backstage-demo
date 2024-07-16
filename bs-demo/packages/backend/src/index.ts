@@ -7,6 +7,12 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
+// import catalogModuleGitlabDiscoveryEntityProvider from '@backstage/plugin-catalog-backend-module-gitlab/alpha';
+
+import {
+  gitlabPlugin,
+  catalogPluginGitlabFillerProcessorModule,
+} from '@immobiliarelabs/backstage-plugin-gitlab-backend';
 
 const backend = createBackend();
 
@@ -44,12 +50,10 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 
-import {
-  gitlabPlugin,
-  catalogPluginGitlabFillerProcessorModule,
-} from '@immobiliarelabs/backstage-plugin-gitlab-backend';
-
 backend.add(gitlabPlugin);
 backend.add(catalogPluginGitlabFillerProcessorModule);
+
+backend.add(import('@backstage/plugin-catalog-backend-module-gitlab/alpha'));
+// backend.add(catalogModuleGitlabDiscoveryEntityProvider)
 
 backend.start();

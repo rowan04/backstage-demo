@@ -40,8 +40,11 @@ integrations:
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
   gitlab:
-    - host: gitlab.com
-      token: ${GITLAB_TOKEN}
+    - host: gitlab.ceda.ac.uk
+      token: cKtqTgJDjZ3sxQHpuvTj
+      # baseUrl: https://gitlab.com
+      # baseurl: https://gitlab.ceda.ac.uk/cedadev
+      apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -104,6 +107,9 @@ catalog:
       rules:
         - allow: [User, Group]
 
+    - type: url
+      target: https://gitlab.ceda.ac.uk/cedadev/rowan-backstage-gl-comp-testing/blob/main/catalog-info.yaml
+
   providers:
     githubOrg:
       id: cedadev
@@ -112,6 +118,13 @@ catalog:
       schedule:
         frequency: { hours: 1 }
         timeout: { minutes: 50 }
+
+    gitlab:
+      cedadev:
+        host: gitlab.ceda.ac.uk
+        schedule:
+          frequency: { hours: 1 }
+          timeout: { minutes: 50 }
 
     ## Uncomment these lines to add more example data
     # - type: url
