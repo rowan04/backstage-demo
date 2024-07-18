@@ -56,4 +56,7 @@ backend.add(catalogPluginGitlabFillerProcessorModule);
 backend.add(import('@backstage/plugin-catalog-backend-module-gitlab/alpha'));
 // backend.add(catalogModuleGitlabDiscoveryEntityProvider)
 
+backend.add(import('@backstage/plugin-events-backend/alpha'));
+backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
+
 backend.start();
