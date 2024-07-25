@@ -8,3 +8,7 @@ To start the app, run:
 yarn install
 yarn dev
 ```
+
+
+to update everything:
+yarn backstage-cli versions:bump

@@ -32,19 +32,20 @@ backend:
 integrations:
   github:
     - host: github.com
-      # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
-      # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
+      # The following token gets overriden by the token provided in app-config.local.yaml
       token: ${GITHUB_TOKEN}
+
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
   gitlab:
     - host: gitlab.ceda.ac.uk
-      token: cKtqTgJDjZ3sxQHpuvTj
-      # baseUrl: https://gitlab.com
-      # baseurl: https://gitlab.ceda.ac.uk/cedadev
-      apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
+      # token: cKtqTgJDjZ3sxQHpuvTj
+      # # baseUrl: https://gitlab.com
+      # # baseurl: https://gitlab.ceda.ac.uk/cedadev
+      # apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
+      token: ${GITLAB_TOKEN}
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -73,6 +74,9 @@ auth:
       development:
         clientId: Ov23lihDNXPL1UnKQOWb
         clientSecret: f2adc48458612468575ea14fb6157a658f24e987
+        # clientSecret: 618f00701f8fa5297326533e1a30bf7a040b436b
+        # clientId: Ov23li2yN3HmZcY6kXSU
+        # clientSecret: fe1506db2dda80520ee53ea433238b5a49974bfb
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
@@ -81,6 +85,16 @@ auth:
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
+  defaultAuthor:
+    name: ${{ parameters.name }}
+    email: ${{ parameters.email }}
+
+  gitlab:
+    api:
+      baseUrl: https://gitlab.ceda.ac.uk
+      # token: cKtqTgJDjZ3sxQHpuvTj
+      token: zBbmvYs3EsHypGCDm4QJ
+      apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
 
 catalog:
   import:
@@ -107,8 +121,9 @@ catalog:
       rules:
         - allow: [User, Group]
 
-    - type: url
-      target: https://gitlab.ceda.ac.uk/cedadev/rowan-backstage-gl-comp-testing/blob/main/catalog-info.yaml
+    # add repositories from cedadev gitlab
+    # - type: location
+    #   target: https://gitlab.ceda.ac.uk/cedadev
 
   providers:
     githubOrg:
@@ -122,9 +137,13 @@ catalog:
     gitlab:
       cedadev:
         host: gitlab.ceda.ac.uk
+        branch: main
+        fallbackBranch: master
+        group: cedadev
         schedule:
           frequency: { hours: 1 }
           timeout: { minutes: 50 }
+          # initialDelay: { seconds: 0 }
 
     ## Uncomment these lines to add more example data
     # - type: url

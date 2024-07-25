@@ -53,12 +53,3 @@ spec:
     - https://github.com/cedadev/backstage-template-created-repo-4/blob/master/catalog-info.yaml
     # - https://gitlab.ceda.ac.uk/cedadev/rowan-backstage-gl-comp-testing/blob/main/catalog-info.yaml
 ---
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: cedadev-gitlab
-  annotations:
-    gitlab.com/project-slug: cedadev
-spec:
-  type: service
-  owner: developers
