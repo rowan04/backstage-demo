@@ -56,3 +56,7 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-catalog-backend/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 ```
+
+## Extra details:
+
+When creating repos via template, you might have to run `NODE_OPTIONS=--no-node-snapshot` in terminal first
