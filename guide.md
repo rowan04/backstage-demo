@@ -1,14 +1,22 @@
 # Creating your own backstage app (simplified)
 
+## Installs
+To begin with, we will need to install a few things. Backstage documents all this at https://backstage.io/docs/getting-started/#prerequisites, but I've also outlined what you need below:
+
+You will need node.js, and we need to install this using nvm.
+
+Run either `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash` or `wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash` in a terminal to install nvm. For help view https://github.com/nvm-sh/nvm#install--update-script. 
+
+Then install Node.js using one of the methods found at https://nodejs.org/en/download/package-manager/#nvm. 
+
+You will need to install yarn: run `npm install --global yarn` in a terminal. For help view https://classic.yarnpkg.com/en/docs/install#windows-stable.
+
 ## Setup
+In the root of your repository, run ```npx @backstage/create-app@latest``` to create your backstage app. See https://backstage.io/docs/getting-started/#1-create-your-backstage-app for more information on this process.
 
-In the root of your repository, run ```npx @backstage/create-app@latest``` to create your backstage app.
+Then `cd` into your new backstage app, and run it with `yarn dev` in a terminal.
 
-See https://backstage.io/docs/getting-started/
-
-Then `cd` into your new backstage app, and run it with `yarn dev`.
-
-To run debugging version: `LOG_LEVEL=debug yarn dev`
+To run debugging version: `LOG_LEVEL=debug yarn dev` in a terminal.
 
 ## GitHub Authentication and Organisational Data
 
