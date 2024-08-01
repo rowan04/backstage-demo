@@ -244,9 +244,14 @@ spec:
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ['gitlab.ceda.ac.uk']
+        allowedHosts:
+          - gitlab.ceda.ac.uk
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        # setUserAsOwner: true # results in 403: forbidden error.
+        settings:
+          visibility: internal
 
     - id: register
       name: Register
