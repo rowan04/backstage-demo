@@ -110,7 +110,7 @@ spec:
           # https://github.com/backstage/backstage/pull/23893
           # https://github.com/backstage/backstage/pull/23283
           # possibly to be completed with this https://github.com/backstage/backstage/issues/10430
-          default: ${{ user.entity }}
+          # default: ${{ user.entity }}
           ui:field: OwnerPicker
           ui:options:
             catalogFilter:
@@ -205,7 +205,7 @@ spec:
           # https://github.com/backstage/backstage/pull/23893
           # https://github.com/backstage/backstage/pull/23283
           # possibly to be completed with this https://github.com/backstage/backstage/issues/10430
-          default: ${{ user.entity }}
+          # default: ${{ user.entity }}
           ui:field: OwnerPicker
           ui:options:
             catalogFilter:

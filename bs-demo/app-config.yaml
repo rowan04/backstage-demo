@@ -41,10 +41,7 @@ integrations:
     #   token: ${GHE_TOKEN}
   gitlab:
     - host: gitlab.ceda.ac.uk
-      # token: cKtqTgJDjZ3sxQHpuvTj
-      # # baseUrl: https://gitlab.com
-      # # baseurl: https://gitlab.ceda.ac.uk/cedadev
-      # apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
+      # The following token gets overriden by the token provided in app-config.local.yaml
       token: ${GITLAB_TOKEN}
 
 proxy:
@@ -74,9 +71,6 @@ auth:
       development:
         clientId: Ov23lihDNXPL1UnKQOWb
         clientSecret: f2adc48458612468575ea14fb6157a658f24e987
-        # clientSecret: 618f00701f8fa5297326533e1a30bf7a040b436b
-        # clientId: Ov23li2yN3HmZcY6kXSU
-        # clientSecret: fe1506db2dda80520ee53ea433238b5a49974bfb
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
@@ -94,7 +88,6 @@ scaffolder:
   gitlab:
     api:
       baseUrl: https://gitlab.ceda.ac.uk
-      # token: cKtqTgJDjZ3sxQHpuvTj
       token: zBbmvYs3EsHypGCDm4QJ
       apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
 
@@ -123,10 +116,6 @@ catalog:
       rules:
         - allow: [User, Group]
 
-    # add repositories from cedadev gitlab
-    # - type: location
-    #   target: https://gitlab.ceda.ac.uk/cedadev
-
   providers:
     githubOrg:
       id: cedadev
@@ -145,7 +134,6 @@ catalog:
         schedule:
           frequency: { hours: 1 }
           timeout: { minutes: 50 }
-          # initialDelay: { seconds: 0 }
 
     ## Uncomment these lines to add more example data
     # - type: url

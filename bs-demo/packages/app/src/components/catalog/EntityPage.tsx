@@ -236,7 +236,7 @@ const serviceEntityPage = (
     </EntityLayout.Route>
 
     <EntityLayout.Route
-    //  if={isGitlabAvailable}
+     if={isGitlabAvailable}
       path="/gitlab"
       title="Gitlab"
     >
