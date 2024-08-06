@@ -65,6 +65,22 @@ backend.add(import('@backstage/plugin-catalog-backend/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 ```
 
+## Current error:
+I currently receive the following error when following these steps I wrote myself. I have no idea why. Nothing online explains the error I have. Truly confusing:
+
+```
+[1] C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackendInitializer.ts:187
+[1]               throw new Error(
+[1]                     ^
+[1]
+[1]
+[1] Error: ExtensionPoint with ID 'catalog.processing' is already registered
+[1]     at BackendInitializer.#doStart (C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackendInitializer.ts:187:21)
+[1]     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[1]     at BackendInitializer.start (C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackendInitializer.ts:150:5)
+[1]     at BackstageBackend.start (C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackstageBackend.ts:42:11)
+```
+
 ## Extra details:
 
 When creating repos via template, you might have to run `export NODE_OPTIONS=--no-node-snapshot` in terminal first
