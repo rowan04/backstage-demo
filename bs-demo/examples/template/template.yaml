@@ -79,9 +79,9 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 # some metadata about the template itself
 metadata:
-  name: rowan-template-test
-  title: rowan-template-test
-  description: rowans template test
+  name: github-template-test
+  title: github-template-test
+  description: rowans template test for github repository creation
 spec:
   owner: user:rowan04
   type: service
@@ -176,7 +176,7 @@ kind: Template
 metadata:
   name: gitlab-template-test
   title: gitlab-template-test
-  description: gitlab template test
+  description: rowans template test for gitlab repository creation
 spec:
   owner: user:rowan04
   type: service
@@ -268,3 +268,170 @@ spec:
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
+---
+# Notice the v1beta3 version
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+# some metadata about the template itself
+metadata:
+  name: github-and-gitlab-creation
+  title: github-and-gitlab-creation
+  description: create a repository in both github and gitlab from a single template
+spec:
+  owner: user:rowan04
+  type: service
+
+  # these are the steps which are rendered in the frontend with the form input
+  parameters:
+    - title: Fill in some steps
+      required:
+        - name
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          # it seems the below is in discussion to be worked upon:
+          # https://github.com/backstage/backstage/issues/15988
+          # https://github.com/backstage/backstage/issues/16275
+          # https://github.com/backstage/backstage/pull/17746
+          # https://github.com/backstage/backstage/pull/23893
+          # https://github.com/backstage/backstage/pull/23283
+          # possibly to be completed with this https://github.com/backstage/backstage/issues/10430
+          # default: ${{ user.entity }}
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: [Group, User]
+
+    - title: Choose a GitHub location
+      required:
+        - githubRepoUrl
+      properties:
+        githubRepoUrl:
+          title: GitHub Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+              - cedadev
+
+    - title: Choose a GitLab location
+      required:
+        - gitlabRepoUrl
+      properties:
+        gitlabRepoUrl:
+          title: Gitlab Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - gitlab.ceda.ac.uk
+            allowedOwners:
+              - cedadev
+
+  # here's the steps that are executed in series in the scaffolder backend
+  steps:
+    - id: fetch-base-github
+      name: Fetch Base for GitHub
+      action: fetch:template
+      input:
+        url: ./content
+        targetPath: ./ghub
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          destination: ${{ parameters.githubRepoUrl | parseRepoUrl }}
+
+    - id: fetch-base-gitlab
+      name: Fetch Base for GitLab
+      action: fetch:template
+      input:
+        url: ./content
+        targetPath: ./glab
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          destination: ${{ parameters.gitlabRepoUrl | parseRepoUrl }}
+
+    - id: fetch-docs-gh
+      name: Fetch Docs
+      action: fetch:plain
+      input:
+        targetPath: ./ghub/community
+        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
+
+    - id: fetch-docs-gl
+      name: Fetch Docs
+      action: fetch:plain
+      input:
+        targetPath: ./glab/community
+        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
+
+    - id: publish-github
+      name: Publish GitHub
+      action: publish:github
+      input:
+        sourcePath: ./ghub
+        gitAuthorName: ${{ user.entity.metadata.name }}
+        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+        allowedHosts:
+          - github.com
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.githubRepoUrl }}
+        defaultBranch: main
+
+    - id: publish-gitlab
+      name: Publish GitLab
+      action: publish:gitlab
+      input:
+        sourcePath: ./glab
+        gitAuthorName: ${{ user.entity.metadata.name }}
+        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+        allowedHosts:
+          - gitlab.ceda.ac.uk
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.gitlabRepoUrl }}
+        defaultBranch: main
+        # force: true
+        settings:
+          visibility: internal
+
+    # currently commented out, as the github repo isn't needed to be registered in backstage catalog
+    # - id: register-github
+    #   name: Register GitHub
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl }}
+    #     catalogInfoPath: '/catalog-info.yaml'
+
+    - id: register-gitlab
+      name: Register GitLab
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-gitlab'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  # some outputs which are saved along with the job for use in the frontend
+  output:
+    links:
+      - title: GitHub Repository
+        url: ${{ steps['publish-github'].output.remoteUrl }}
+      # - title: Open GitHub repo in catalog
+      #   icon: catalog
+      #   entityRef: ${{ steps['register-github'].output.entityRef }}
+      - title: Open GitLab repo in catalog
+        icon: catalog
+        entityRef: ${{ steps['register-gitlab'].output.entityRef }}
+      - title: GitLab Repository
+        url: ${{ steps['publish-gitlab'].output.remoteUrl }}
+---

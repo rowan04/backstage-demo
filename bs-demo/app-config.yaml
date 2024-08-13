@@ -79,11 +79,13 @@ auth:
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
-  defaultAuthor:
+  # defaultAuthor:
     # name: ${{ parameters.name }}
     # email: ${{ parameters.email }}
-    name: Rowan Moss
-    email: rowan.moss@stfc.ac.uk
+    # name: Rowan Moss
+    # email: rowan.moss@stfc.ac.uk
+    # gitAuthorName: ${{ user.entity.metadata.name }}
+    # gitAuthorEmail: ${{ user.entity.spec.profile.email }}
 
   gitlab:
     api:
