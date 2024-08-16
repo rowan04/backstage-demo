@@ -341,11 +341,14 @@ spec:
 
   # here's the steps that are executed in series in the scaffolder backend
   steps:
+    # the following fetch base's add the catalog-info.yaml file
+
     - id: fetch-base-github
       name: Fetch Base for GitHub
       action: fetch:template
+      # action: fetch:cookiecutter
       input:
-        url: ./content
+        url: ./github_content
         targetPath: ./ghub
         values:
           name: ${{ parameters.name }}
@@ -355,27 +358,36 @@ spec:
     - id: fetch-base-gitlab
       name: Fetch Base for GitLab
       action: fetch:template
+      # action: fetch:cookiecutter
       input:
-        url: ./content
+        url: ./gitlab_content
         targetPath: ./glab
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
           destination: ${{ parameters.gitlabRepoUrl | parseRepoUrl }}
+    
+    # - id: add_pre_commit_config_github
+    #   name: Add Pre Commit Config for Github
+    #   action: fetch:plain:file
+    #   input:
+    #     url: https://github.com/ESGF/esgf-playground-utils/blob/main/.pre-commit-config.yaml
+    #     targetPath: ./ghub/.pre-commit-config.yaml
 
-    - id: fetch-docs-gh
-      name: Fetch Docs
-      action: fetch:plain
-      input:
-        targetPath: ./ghub/community
-        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
 
-    - id: fetch-docs-gl
-      name: Fetch Docs
-      action: fetch:plain
-      input:
-        targetPath: ./glab/community
-        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
+    # - id: fetch-docs-gh
+    #   name: Fetch Docs
+    #   action: fetch:plain
+    #   input:
+    #     targetPath: ./ghub/community
+    #     url: https://github.com/backstage/community/tree/main/backstage-community-sessions
+
+    # - id: fetch-docs-gh
+    #   name: Fetch Docs
+    #   action: fetch:cookiecutter
+    #   input:
+    #     targetPath: ./ghub/community
+    #     url: https://github.com/backstage/community/tree/main/backstage-community-sessions
 
     - id: publish-github
       name: Publish GitHub
@@ -396,7 +408,9 @@ spec:
       input:
         sourcePath: ./glab
         gitAuthorName: ${{ user.entity.metadata.name }}
-        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+        # below commented out until my personal email gets added to my gitlab account (wont work atm)
+        # gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+        gitAuthorEmail: rowan.moss@stfc.ac.uk
         allowedHosts:
           - gitlab.ceda.ac.uk
         description: This is ${{ parameters.name }}

@@ -1,0 +1,94 @@
+[tool.poetry]
+name = '${{ values.name }}'
+version = "0.0.0"
+description = 'This is ${{ values.name }}'
+# authors = [
+#     '${{ values.user.entity.metadata.name }} <${{ values.user.entity.spec.profile.email }}>'
+# ]
+authors = [
+    ' ${{ values.owner }} '
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+pydantic-settings = "^2.3.4"
+stac-pydantic = "^3.1.1"
+
+[tool.poetry.group.black.dependencies]
+black = "^24.4.2"
+pre-commit = "^3.7.1"
+
+[tool.poetry.group.mypy.dependencies]
+mypy = "^1.10.1"
+pre-commit = "^3.7.1"
+
+[tool.poetry.group.bandit.dependencies]
+bandit = "^1.7.9"
+pre-commit = "^3.7.1"
+
+[tool.poetry.group.ruff.dependencies]
+ruff = "^0.5.2"
+pre-commit = "^3.7.1"
+
+[tool.poetry.group.isort.dependencies]
+isort = "^5.13.2"
+pre-commit = "^3.7.1"
+
+[tool.poetry.group.xenon.dependencies]
+xenon = "^0.9.1"
+pre-commit = "^3.7.1"
+
+[tool.poetry.group.test.dependencies]
+coverage = { extras = ["toml"], version = "^7.6.0" }
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.4.7"
+sphinx-autoapi = "^3.2.1"
+sphinx-pydantic = "^0.1.1"
+sphinx-rtd-theme = "^2.0.0"
+sphinx-mdinclude = "^0.6.2"
+
+[tool.mypy]
+plugins = [
+    "pydantic.mypy"
+]
+strict = true
+ignore_missing_imports = true
+python_version = "3.9"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+target-version = ["py39", "py310", "py311", "py312", "py313"]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.format]
+docstring-code-format = true
+indent-style = "space"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+fail_under = 100
+
+[tool.quality.mccabe]
+average = "A"
+block = "A"
+module = "A"
+
+[tool.bandit]
+skips = []
+
+[tool.quality.audit]
+ignore-code = ["CVE-2019-8341"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
