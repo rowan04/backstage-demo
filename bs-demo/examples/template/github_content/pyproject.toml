@@ -2,11 +2,8 @@
 name = '${{ values.name }}'
 version = "0.0.0"
 description = 'This is ${{ values.name }}'
-# authors = [
-#     '${{ values.user.entity.metadata.name }} <${{ values.user.entity.spec.profile.email }}>'
-# ]
 authors = [
-    ' ${{ values.owner }} '
+    "${{ values.gitAuthorName }} <${{ values.gitAuthorEmail }}>"
 ]
 readme = "README.md"
 
@@ -76,12 +73,12 @@ indent-style = "space"
 branch = true
 
 [tool.coverage.report]
-fail_under = 100
+fail_under = ${{ values.testCoverage }}
 
 [tool.quality.mccabe]
-average = "A"
-block = "A"
-module = "A"
+average = "${{ values.mccabeCodeQuality }}"
+block = "${{ values.mccabeCodeQuality }}"
+module = "${{ values.mccabeCodeQuality }}"
 
 [tool.bandit]
 skips = []

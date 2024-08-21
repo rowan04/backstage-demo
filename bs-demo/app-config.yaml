@@ -124,8 +124,9 @@ catalog:
       githubUrl: https://github.com/cedadev
       orgs: ['cedadev']
       schedule:
-        frequency: { hours: 1 }
-        timeout: { minutes: 50 }
+        frequency: { minutes: 60 }
+        timeout: { minutes: 30 }
+        initialDelay: { seconds: 0 }
 
     gitlab:
       cedadev:
@@ -134,8 +135,9 @@ catalog:
         fallbackBranch: master
         group: cedadev
         schedule:
-          frequency: { hours: 1 }
-          timeout: { minutes: 50 }
+          frequency: { minutes: 60 }
+          timeout: { minutes: 30 }
+          initialDelay: { seconds: 0 }
 
     ## Uncomment these lines to add more example data
     # - type: url

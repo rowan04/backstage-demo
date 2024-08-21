@@ -324,6 +324,19 @@ spec:
               - github.com
             allowedOwners:
               - cedadev
+        testCoverage:
+          title: Test Coverage
+          type: integer
+          minimum: 0
+          maximum: 100
+          multipleOf: 5
+          default: 100
+          ui:widget: range
+        mccabeCodeQuality:
+          title: McCabe Code Quality
+          type: string
+          enum: [A, B, C, D, E, F]
+          default: A
 
     - title: Choose a GitLab location
       required:
@@ -353,6 +366,10 @@ spec:
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
+          testCoverage: ${{ parameters.testCoverage }}
+          mccabeCodeQuality: ${{ parameters.mccabeCodeQuality }}
+          gitAuthorName: ${{ user.entity.metadata.name }}
+          gitAuthorEmail: ${{ user.entity.spec.profile.email }}
           destination: ${{ parameters.githubRepoUrl | parseRepoUrl }}
 
     - id: fetch-base-gitlab
@@ -365,6 +382,8 @@ spec:
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
+          gitAuthorName: ${{ user.entity.metadata.name }}
+          gitAuthorEmail: ${{ user.entity.spec.profile.email }}
           destination: ${{ parameters.gitlabRepoUrl | parseRepoUrl }}
     
     # - id: add_pre_commit_config_github
