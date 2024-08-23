@@ -126,7 +126,7 @@ catalog:
       schedule:
         frequency: { minutes: 60 }
         timeout: { minutes: 30 }
-        initialDelay: { seconds: 0 }
+        # initialDelay: { seconds: 0 }
 
     gitlab:
       cedadev:
@@ -137,7 +137,7 @@ catalog:
         schedule:
           frequency: { minutes: 60 }
           timeout: { minutes: 30 }
-          initialDelay: { seconds: 0 }
+          # initialDelay: { seconds: 0 }
 
     ## Uncomment these lines to add more example data
     # - type: url
