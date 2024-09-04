@@ -332,11 +332,27 @@ spec:
           multipleOf: 5
           default: 100
           ui:widget: range
+
         mccabeCodeQuality:
           title: McCabe Code Quality
           type: string
           enum: [A, B, C, D, E, F]
           default: A
+
+        banditSkips:
+          title: Bandit Skips
+          type: array
+          items: {
+            type: string,
+            enum: [
+              "error1",
+              "error2",
+              "error3",
+              "error4"
+            ]
+          }
+          uniqueItems: true
+          ui:widget: checkboxes
 
     - title: Choose a GitLab location
       required:
@@ -354,7 +370,6 @@ spec:
 
   # here's the steps that are executed in series in the scaffolder backend
   steps:
-    # the following fetch base's add the catalog-info.yaml file
 
     - id: fetch-base-github
       name: Fetch Base for GitHub
@@ -368,6 +383,7 @@ spec:
           owner: ${{ parameters.owner }}
           testCoverage: ${{ parameters.testCoverage }}
           mccabeCodeQuality: ${{ parameters.mccabeCodeQuality }}
+          banditSkips: ${{ parameters.banditSkips }}
           gitAuthorName: ${{ user.entity.metadata.name }}
           gitAuthorEmail: ${{ user.entity.spec.profile.email }}
           destination: ${{ parameters.githubRepoUrl | parseRepoUrl }}

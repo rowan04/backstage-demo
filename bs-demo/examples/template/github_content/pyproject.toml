@@ -81,7 +81,8 @@ block = "${{ values.mccabeCodeQuality }}"
 module = "${{ values.mccabeCodeQuality }}"
 
 [tool.bandit]
-skips = []
+skips = ${{ values.banditSkips | dump }}
+# can alternatively be formatted as [${{ values.banditSkips }}]
 
 [tool.quality.audit]
 ignore-code = ["CVE-2019-8341"]
