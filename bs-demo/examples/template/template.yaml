@@ -343,16 +343,19 @@ spec:
           title: Bandit Skips
           type: array
           items: {
+            title: "Add error to skip:",
             type: string,
-            enum: [
-              "error1",
-              "error2",
-              "error3",
-              "error4"
-            ]
+            # uncomment the following lines to have a set list of errors, instead of custom entry
+            # enum: [
+            #   "error1",
+            #   "error2",
+            #   "error3",
+            #   "error4"
+            # ]
           }
-          uniqueItems: true
-          ui:widget: checkboxes
+          # uncomment the following lines with the enum above to use checkboxes on the set error list
+          # uniqueItems: true
+          # ui:widget: checkboxes
 
     - title: Choose a GitLab location
       required:
