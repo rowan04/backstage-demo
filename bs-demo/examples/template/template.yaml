@@ -70,16 +70,19 @@ spec:
           title: Bandit Skips
           type: array
           items: {
+            title: "Add error to skip:",
             type: string,
-            enum: [
-              "error1",
-              "error2",
-              "error3",
-              "error4"
-            ]
+            # uncomment the following lines to have a preset list of errors, instead of custom entry
+            # enum: [
+            #   "error1",
+            #   "error2",
+            #   "error3",
+            #   "error4"
+            # ]
           }
-          uniqueItems: true
-          ui:widget: checkboxes
+          # uncomment the following lines with the enum above to use checkboxes on the preset error list
+          # uniqueItems: true
+          # ui:widget: checkboxes
 
   # here's the steps that are executed in series in the scaffolder backend, using parameter data
   steps:
@@ -301,7 +304,7 @@ spec:
           items: {
             title: "Add error to skip:",
             type: string,
-            # uncomment the following lines to have a set list of errors, instead of custom entry
+            # uncomment the following lines to have a preset list of errors, instead of custom entry
             # enum: [
             #   "error1",
             #   "error2",
@@ -309,7 +312,7 @@ spec:
             #   "error4"
             # ]
           }
-          # uncomment the following lines with the enum above to use checkboxes on the set error list
+          # uncomment the following lines with the enum above to use checkboxes on the preset error list
           # uniqueItems: true
           # ui:widget: checkboxes
 
