@@ -1,92 +1,16 @@
 apiVersion: scaffolder.backstage.io/v1beta3
-# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
-kind: Template
-metadata:
-  name: example-nodejs-template
-  title: Example Node.js Template
-  description: An example template for the scaffolder that creates a simple Node.js service
-spec:
-  owner: user:guest
-  type: service
-
-  # These parameters are used to generate the input form in the frontend, and are
-  # used to gather input data for the execution of the template.
-  parameters:
-    - title: Fill in some steps
-      required:
-        - name
-      properties:
-        name:
-          title: Name
-          type: string
-          description: Unique name of the component
-          ui:autofocus: true
-          ui:options:
-            rows: 5
-    - title: Choose a location
-      required:
-        - repoUrl
-      properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
-
-  # These steps are executed in the scaffolder backend, using data that we gathered
-  # via the parameters above.
-  steps:
-    # Each step executes an action, in this case one templates files into the working directory.
-    - id: fetch-base
-      name: Fetch Base
-      action: fetch:template
-      input:
-        url: ./content
-        cookiecutterCompact: true
-        values:
-          name: ${{ parameters.name }}
-
-    # This step publishes the contents of the working directory to GitHub.
-    - id: publish
-      name: Publish
-      action: publish:github
-      input:
-        allowedHosts: ['github.com']
-        description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.repoUrl }}
-
-    # The final step is to register our new component in the catalog.
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
-
-  # Outputs are displayed to the user after a successful execution of the template.
-  output:
-    links:
-      - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
-      - title: Open in catalog
-        icon: catalog
-        entityRef: ${{ steps['register'].output.entityRef }}
----
-# Notice the v1beta3 version
-apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 # some metadata about the template itself
 metadata:
-  name: github-template-test
-  title: github-template-test
-  description: rowans template test for github repository creation
+  name: github-repository-creation
+  title: github-repository-creation
+  description: A template that creates just a GitHub repository.
 spec:
   owner: user:rowan04
   type: service
 
-  # these are the steps which are rendered in the frontend with the form input
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
   parameters:
     - title: Fill in some steps
       required:
@@ -104,54 +28,89 @@ spec:
           type: string
           description: Owner of the component
           # it seems the below is in discussion to be worked upon:
-          # https://github.com/backstage/backstage/issues/15988
-          # https://github.com/backstage/backstage/issues/16275
-          # https://github.com/backstage/backstage/pull/17746
-          # https://github.com/backstage/backstage/pull/23893
-          # https://github.com/backstage/backstage/pull/23283
+          # https://github.com/backstage/backstage/issues/15988, https://github.com/backstage/backstage/issues/16275, https://github.com/backstage/backstage/pull/17746,
+          # https://github.com/backstage/backstage/pull/23893, https://github.com/backstage/backstage/pull/23283
           # possibly to be completed with this https://github.com/backstage/backstage/issues/10430
           # default: ${{ user.entity }}
           ui:field: OwnerPicker
           ui:options:
             catalogFilter:
               kind: [Group, User]
+
     - title: Choose a location
       required:
         - repoUrl
       properties:
         repoUrl:
-          title: Repository Location
+          title: GitHub Repository Location
           type: string
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
               - github.com
+            allowedOwners:
+              - cedadev
 
-  # here's the steps that are executed in series in the scaffolder backend
+        testCoverage:
+          title: Test Coverage
+          type: integer
+          minimum: 0
+          maximum: 100
+          multipleOf: 5
+          default: 100
+          ui:widget: range
+
+        mccabeCodeQuality:
+          title: McCabe Code Quality
+          type: string
+          enum: [A, B, C, D, E, F]
+          default: A
+
+        banditSkips:
+          title: Bandit Skips
+          type: array
+          items: {
+            type: string,
+            enum: [
+              "error1",
+              "error2",
+              "error3",
+              "error4"
+            ]
+          }
+          uniqueItems: true
+          ui:widget: checkboxes
+
+  # here's the steps that are executed in series in the scaffolder backend, using parameter data
   steps:
     - id: fetch-base
       name: Fetch Base
       action: fetch:template
       input:
-        url: ./content
+        url: ./github_content
+        targetPath: ./ghub
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
-
-    - id: fetch-docs
-      name: Fetch Docs
-      action: fetch:plain
-      input:
-        targetPath: ./community
-        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
+          testCoverage: ${{ parameters.testCoverage }}
+          mccabeCodeQuality: ${{ parameters.mccabeCodeQuality }}
+          banditSkips: ${{ parameters.banditSkips }}
+          gitAuthorName: ${{ user.entity.metadata.name }}
+          gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
 
     - id: publish
       name: Publish
       action: publish:github
       input:
-        allowedHosts: ['github.com']
+        sourcePath: ./ghub
+        gitAuthorName: ${{ user.entity.metadata.name }}
+        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+        allowedHosts:
+          - github.com
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
 
     - id: register
       name: Register
@@ -169,19 +128,19 @@ spec:
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
 ---
-# Notice the v1beta3 version
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 # some metadata about the template itself
 metadata:
-  name: gitlab-template-test
-  title: gitlab-template-test
-  description: rowans template test for gitlab repository creation
+  name: gitlab-repository-creation
+  title: gitlab-repository-creation
+  description: A template that creates just a GitLab repository.
 spec:
   owner: user:rowan04
   type: service
 
-  # these are the steps which are rendered in the frontend with the form input
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
   parameters:
     - title: Fill in some steps
       required:
@@ -199,57 +158,56 @@ spec:
           type: string
           description: Owner of the component
           # it seems the below is in discussion to be worked upon:
-          # https://github.com/backstage/backstage/issues/15988
-          # https://github.com/backstage/backstage/issues/16275
-          # https://github.com/backstage/backstage/pull/17746
-          # https://github.com/backstage/backstage/pull/23893
-          # https://github.com/backstage/backstage/pull/23283
+          # https://github.com/backstage/backstage/issues/15988, https://github.com/backstage/backstage/issues/16275, https://github.com/backstage/backstage/pull/17746,
+          # https://github.com/backstage/backstage/pull/23893, https://github.com/backstage/backstage/pull/23283
           # possibly to be completed with this https://github.com/backstage/backstage/issues/10430
           # default: ${{ user.entity }}
           ui:field: OwnerPicker
           ui:options:
             catalogFilter:
               kind: [Group, User]
+
     - title: Choose a location
       required:
         - repoUrl
       properties:
         repoUrl:
-          title: Repository Location
+          title: GitLab Repository Location
           type: string
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
               - gitlab.ceda.ac.uk
+            allowedOwners:
+              - cedadev
 
-  # here's the steps that are executed in series in the scaffolder backend
+  # here's the steps that are executed in series in the scaffolder backend, using parameter data
   steps:
     - id: fetch-base
       name: Fetch Base
       action: fetch:template
       input:
-        url: ./content
+        url: ./gitlab_content
+        targetPath: ./glab
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
-
-    - id: fetch-docs
-      name: Fetch Docs
-      action: fetch:plain
-      input:
-        targetPath: ./community
-        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
+          gitAuthorName: ${{ user.entity.metadata.name }}
+          gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
 
     - id: publish
       name: Publish
       action: publish:gitlab
       input:
+        sourcePath: ./glab
+        gitAuthorName: ${{ user.entity.metadata.name }}
+        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
         allowedHosts:
           - gitlab.ceda.ac.uk
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
-        # setUserAsOwner: true # results in 403: forbidden error.
         settings:
           visibility: internal
 
@@ -269,19 +227,19 @@ spec:
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
 ---
-# Notice the v1beta3 version
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 # some metadata about the template itself
 metadata:
-  name: github-and-gitlab-creation
-  title: github-and-gitlab-creation
-  description: create a repository in both github and gitlab from a single template
+  name: github-and-gitlab-repository-creation
+  title: github-and-gitlab-repository-creation
+  description: A template that creates both a GitHub and GitLab repository
 spec:
   owner: user:rowan04
   type: service
 
-  # these are the steps which are rendered in the frontend with the form input
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
   parameters:
     - title: Fill in some steps
       required:
@@ -299,11 +257,8 @@ spec:
           type: string
           description: Owner of the component
           # it seems the below is in discussion to be worked upon:
-          # https://github.com/backstage/backstage/issues/15988
-          # https://github.com/backstage/backstage/issues/16275
-          # https://github.com/backstage/backstage/pull/17746
-          # https://github.com/backstage/backstage/pull/23893
-          # https://github.com/backstage/backstage/pull/23283
+          # https://github.com/backstage/backstage/issues/15988, https://github.com/backstage/backstage/issues/16275, https://github.com/backstage/backstage/pull/17746,
+          # https://github.com/backstage/backstage/pull/23893, https://github.com/backstage/backstage/pull/23283
           # possibly to be completed with this https://github.com/backstage/backstage/issues/10430
           # default: ${{ user.entity }}
           ui:field: OwnerPicker
@@ -324,6 +279,7 @@ spec:
               - github.com
             allowedOwners:
               - cedadev
+
         testCoverage:
           title: Test Coverage
           type: integer
@@ -371,13 +327,12 @@ spec:
             allowedOwners:
               - cedadev
 
-  # here's the steps that are executed in series in the scaffolder backend
+  # here's the steps that are executed in series in the scaffolder backend, using parameter data
   steps:
 
     - id: fetch-base-github
       name: Fetch Base for GitHub
       action: fetch:template
-      # action: fetch:cookiecutter
       input:
         url: ./github_content
         targetPath: ./ghub
@@ -394,7 +349,6 @@ spec:
     - id: fetch-base-gitlab
       name: Fetch Base for GitLab
       action: fetch:template
-      # action: fetch:cookiecutter
       input:
         url: ./gitlab_content
         targetPath: ./glab
@@ -404,28 +358,6 @@ spec:
           gitAuthorName: ${{ user.entity.metadata.name }}
           gitAuthorEmail: ${{ user.entity.spec.profile.email }}
           destination: ${{ parameters.gitlabRepoUrl | parseRepoUrl }}
-    
-    # - id: add_pre_commit_config_github
-    #   name: Add Pre Commit Config for Github
-    #   action: fetch:plain:file
-    #   input:
-    #     url: https://github.com/ESGF/esgf-playground-utils/blob/main/.pre-commit-config.yaml
-    #     targetPath: ./ghub/.pre-commit-config.yaml
-
-
-    # - id: fetch-docs-gh
-    #   name: Fetch Docs
-    #   action: fetch:plain
-    #   input:
-    #     targetPath: ./ghub/community
-    #     url: https://github.com/backstage/community/tree/main/backstage-community-sessions
-
-    # - id: fetch-docs-gh
-    #   name: Fetch Docs
-    #   action: fetch:cookiecutter
-    #   input:
-    #     targetPath: ./ghub/community
-    #     url: https://github.com/backstage/community/tree/main/backstage-community-sessions
 
     - id: publish-github
       name: Publish GitHub
@@ -454,7 +386,6 @@ spec:
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabRepoUrl }}
         defaultBranch: main
-        # force: true
         settings:
           visibility: internal
 
