@@ -148,3 +148,19 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://rancher.ceda.ac.uk/k8s/clusters/c-w2zsf
+          name: wigbiorg
+          authProvider: 'serviceAccount'
+          skipTLSVerify: false
+          skipMetricsLookup: false
+          serviceAccountToken: 'overriden in local file'
+          dashboardUrl: https://rancher.ceda.ac.uk
+          dashboardApp: rancher
+          # caFile: ../../ca-file.local
