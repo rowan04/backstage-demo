@@ -77,7 +77,9 @@ import {
   EntityGitlabPipelinesTable,
   EntityGitlabReadmeCard,
   EntityGitlabReleasesCard,
-} from '@immobiliarelabs/backstage-plugin-gitlab'
+} from '@immobiliarelabs/backstage-plugin-gitlab';
+
+import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 
 
 const techdocsContent = (
@@ -203,6 +205,10 @@ const serviceEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
+      <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
