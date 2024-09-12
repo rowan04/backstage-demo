@@ -160,7 +160,6 @@ kubernetes:
           authProvider: 'serviceAccount'
           skipTLSVerify: false
           skipMetricsLookup: false
-          serviceAccountToken: 'overriden in local file'
+          serviceAccountToken: 'overridden in local file'
           dashboardUrl: https://rancher.ceda.ac.uk
           dashboardApp: rancher
-          # caFile: ../../ca-file.local
