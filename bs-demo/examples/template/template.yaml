@@ -349,19 +349,6 @@ spec:
           gitAuthorEmail: ${{ user.entity.spec.profile.email }}
           destination: ${{ parameters.githubRepoUrl | parseRepoUrl }}
 
-    - id: fetch-base-gitlab
-      name: Fetch Base for GitLab
-      action: fetch:template
-      input:
-        url: ./gitlab_content
-        targetPath: ./glab
-        values:
-          name: ${{ parameters.name }}
-          owner: ${{ parameters.owner }}
-          gitAuthorName: ${{ user.entity.metadata.name }}
-          gitAuthorEmail: ${{ user.entity.spec.profile.email }}
-          destination: ${{ parameters.gitlabRepoUrl | parseRepoUrl }}
-
     - id: publish-github
       name: Publish GitHub
       action: publish:github
@@ -374,6 +361,20 @@ spec:
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.githubRepoUrl }}
         defaultBranch: main
+
+    - id: fetch-base-gitlab
+      name: Fetch Base for GitLab
+      action: fetch:template
+      input:
+        url: ./gitlab_content
+        targetPath: ./glab
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          gitAuthorName: ${{ user.entity.metadata.name }}
+          gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+          destination: ${{ parameters.gitlabRepoUrl | parseRepoUrl }}
+          githubUrl: ${{ steps['publish-github'].output.remoteUrl }}
 
     - id: publish-gitlab
       name: Publish GitLab

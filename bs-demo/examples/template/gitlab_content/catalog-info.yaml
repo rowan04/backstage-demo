@@ -5,6 +5,10 @@ metadata:
   description: This is ${{ values.name | dump }}, created by backstage scaffolder
   annotations:
     github.com/project-slug: cedadev/${{ values.name }}
+  links:
+    - url: ${{ values.githubUrl }}
+      title: ${{ values.name }} GitHub
+      icon: github
 spec:
   type: service
   owner: ${{ values.owner }}
