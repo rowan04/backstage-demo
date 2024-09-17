@@ -163,3 +163,8 @@ kubernetes:
           serviceAccountToken: 'overridden in local file'
           dashboardUrl: https://rancher.ceda.ac.uk
           dashboardApp: rancher
+
+harbor:
+  baseUrl: https://registry.ceda.ac.uk
+  username: rowan04
+  password: what?
