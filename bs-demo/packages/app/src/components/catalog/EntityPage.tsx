@@ -81,6 +81,12 @@ import {
 
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 
+import {
+  HarborPage,
+  HarborWidget,
+  isHarborAvailable,
+} from '@digitalist-open-cloud/backstage-plugin-harbor';
+
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -167,6 +173,16 @@ const overviewContent = (
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
 
+    <Grid container spacing={6} alignItems="stretch">
+      <EntitySwitch>
+        <EntitySwitch.Case if={isHarborAvailable}>
+          <Grid item>
+            <HarborWidget />
+          </Grid>
+        </EntitySwitch.Case>
+      </EntitySwitch>
+    </Grid>
+
     <Grid container spacing={3} alignItems="stretch">
         <EntitySwitch>
             <EntitySwitch.Case if={isGitlabAvailable}>
@@ -209,6 +225,10 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/kubernetes" title="Kubernetes">
       <EntityKubernetesContent refreshIntervalMs={30000} />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/harbor" title="Harbor" if={isHarborAvailable}>
+      <HarborPage />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">

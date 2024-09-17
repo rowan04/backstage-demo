@@ -63,4 +63,6 @@ backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
 
 backend.add(import('@backstage/plugin-kubernetes-backend/alpha'));
 
+backend.add(import('@digitalist-open-cloud/backstage-plugin-harbor-backend'));
+
 backend.start();

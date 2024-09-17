@@ -47,6 +47,7 @@
     "@backstage/plugin-search-backend-module-techdocs": "^0.1.27",
     "@backstage/plugin-search-backend-node": "^1.2.27",
     "@backstage/plugin-techdocs-backend": "^1.10.9",
+    "@digitalist-open-cloud/backstage-plugin-harbor-backend": "^0.4.2",
     "@immobiliarelabs/backstage-plugin-gitlab-backend": "^6.5.1",
     "app": "link:../app",
     "better-sqlite3": "^9.0.0",
