@@ -173,6 +173,16 @@ const overviewContent = (
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
 
+    <Grid container spacing={6} alignItems="stretch">
+      <EntitySwitch>
+        <EntitySwitch.Case if={isHarborAvailable}>
+          <Grid item>
+            <HarborWidget />
+          </Grid>
+        </EntitySwitch.Case>
+      </EntitySwitch>
+    </Grid>
+
     <Grid container spacing={3} alignItems="stretch">
         <EntitySwitch>
             <EntitySwitch.Case if={isGitlabAvailable}>
@@ -203,16 +213,6 @@ const overviewContent = (
 
     <Grid item md={6}>
       <EntityGithubPullRequestsOverviewCard />
-    </Grid>
-
-    <Grid container spacing={6} alignItems="stretch">
-      <EntitySwitch>
-        <EntitySwitch.Case if={isHarborAvailable}>
-          <Grid item>
-            <HarborWidget />
-          </Grid>
-        </EntitySwitch.Case>
-      </EntitySwitch>
     </Grid>
   </Grid>
 );

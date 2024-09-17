@@ -166,5 +166,5 @@ kubernetes:
 
 harbor:
   baseUrl: https://registry.ceda.ac.uk
-  username: rowan04
-  password: what?
+  username: 'overridden in local file'
+  password: 'overridden in local file'
