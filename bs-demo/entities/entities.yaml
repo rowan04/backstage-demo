@@ -1,0 +1,10 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: testing-additions
+spec:
+  type: url
+  targets:
+    - https://github.com/cedadev/rowan-backstage-library/blob/main/catalog-info.yaml
+---

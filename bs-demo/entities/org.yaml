@@ -1,0 +1,8 @@
+# add the following lines to catalog:locations: section in app-config.yaml,
+# in order for any custom organsitational data you write here to be used.
+    
+# Add custom additional organisational data
+# - type: file
+#   target: ../../entities/org.yaml
+#   rules:
+#     - allow: [User, Group]
