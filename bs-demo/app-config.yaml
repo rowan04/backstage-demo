@@ -1,9 +1,9 @@
 app:
-  title: Scaffolded Backstage App
+  title: CEDA Backstage
   baseUrl: http://localhost:3000
 
 organization:
-  name: My Company
+  name: CEDA
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -33,16 +33,14 @@ integrations:
   github:
     - host: github.com
       # The following token gets overriden by the token provided in app-config.local.yaml
-      token: ${GITHUB_TOKEN}
+      token: 'overridden in local file'
 
-    ### Example for how to add your GitHub Enterprise instance using the API:
-    # - host: ghe.example.net
-    #   apiBaseUrl: https://ghe.example.net/api/v3
-    #   token: ${GHE_TOKEN}
   gitlab:
     - host: gitlab.ceda.ac.uk
       # The following token gets overriden by the token provided in app-config.local.yaml
-      token: ${GITLAB_TOKEN}
+      token: 'overridden in local file'
+      apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
+      rawBaseUrl: https://gitlab.ceda.ac.uk
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -69,8 +67,8 @@ auth:
   providers:
     github:
       development:
-        clientId: Ov23lihDNXPL1UnKQOWb
-        clientSecret: f2adc48458612468575ea14fb6157a658f24e987
+        clientId: 'overridden in local file'
+        clientSecret: 'overridden in local file'
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
@@ -79,18 +77,10 @@ auth:
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
-  # defaultAuthor:
-    # name: ${{ parameters.name }}
-    # email: ${{ parameters.email }}
-    # name: Rowan Moss
-    # email: rowan.moss@stfc.ac.uk
-    # gitAuthorName: ${{ user.entity.metadata.name }}
-    # gitAuthorEmail: ${{ user.entity.spec.profile.email }}
-
   gitlab:
     api:
       baseUrl: https://gitlab.ceda.ac.uk
-      token: zBbmvYs3EsHypGCDm4QJ
+      token: 'overridden in local file'
       apiBaseUrl: https://gitlab.ceda.ac.uk/api/v4
 
 catalog:
@@ -100,25 +90,20 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    # Add local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
-      target: ../../examples/entities.yaml
+      target: ../../entities/entities.yaml
 
-    # here is where you would add self-written yaml files!
-
-    # Local example template
+    # Add Custom Templates
     - type: file
-      target: ../../examples/template/template.yaml
+      target: ../../entities/template/template.yaml
       rules:
         - allow: [Template]
 
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
+    # here is where you would add self-written yaml files
 
   providers:
+    # import GitHub organisational data (users and groups)
     githubOrg:
       id: cedadev
       githubUrl: https://github.com/cedadev
@@ -126,8 +111,8 @@ catalog:
       schedule:
         frequency: { minutes: 60 }
         timeout: { minutes: 30 }
-        # initialDelay: { seconds: 0 }
 
+    # import GitLab repositories
     gitlab:
       cedadev:
         host: gitlab.ceda.ac.uk
@@ -137,18 +122,8 @@ catalog:
         schedule:
           frequency: { minutes: 60 }
           timeout: { minutes: 30 }
-          # initialDelay: { seconds: 0 }
 
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-
-    ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
-
+# Kubernetes plugin configuration
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
@@ -164,6 +139,7 @@ kubernetes:
           dashboardUrl: https://rancher.ceda.ac.uk
           dashboardApp: rancher
 
+# Harbor plugin configuration
 harbor:
   baseUrl: https://registry.ceda.ac.uk
   username: 'overridden in local file'
