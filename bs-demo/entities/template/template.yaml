@@ -130,6 +130,7 @@ spec:
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
+
 ---
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
@@ -229,6 +230,7 @@ spec:
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
+
 ---
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
@@ -393,7 +395,7 @@ spec:
         settings:
           visibility: internal
 
-    # currently commented out, as the github repo isn't needed to be registered in backstage catalog
+    # uncomment the following lines if you want to register the github repo in the catalog
     # - id: register-github
     #   name: Register GitHub
     #   action: catalog:register
@@ -413,6 +415,7 @@ spec:
     links:
       - title: GitHub Repository
         url: ${{ steps['publish-github'].output.remoteUrl }}
+      # uncomment the following lines if you are registering the github repo in the catalog
       # - title: Open GitHub repo in catalog
       #   icon: catalog
       #   entityRef: ${{ steps['register-github'].output.entityRef }}
@@ -421,4 +424,5 @@ spec:
         entityRef: ${{ steps['register-gitlab'].output.entityRef }}
       - title: GitLab Repository
         url: ${{ steps['publish-gitlab'].output.remoteUrl }}
+
 ---

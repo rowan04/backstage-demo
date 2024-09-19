@@ -1,13 +1,4 @@
-/*
- * Hi!
- *
- * Note that this is an EXAMPLE Backstage backend. Please check the README.
- *
- * Happy hacking!
- */
-
 import { createBackend } from '@backstage/backend-defaults';
-// import catalogModuleGitlabDiscoveryEntityProvider from '@backstage/plugin-catalog-backend-module-gitlab/alpha';
 
 import {
   gitlabPlugin,
@@ -55,7 +46,6 @@ backend.add(gitlabPlugin);
 backend.add(catalogPluginGitlabFillerProcessorModule);
 
 backend.add(import('@backstage/plugin-catalog-backend-module-gitlab/alpha'));
-// backend.add(catalogModuleGitlabDiscoveryEntityProvider)
 backend.add(import('@backstage/plugin-catalog-backend-module-gitlab-org'));
 
 backend.add(import('@backstage/plugin-events-backend/alpha'));
