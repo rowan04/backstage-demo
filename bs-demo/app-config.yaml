@@ -144,3 +144,8 @@ harbor:
   baseUrl: https://registry.ceda.ac.uk
   username: 'overridden in local file'
   password: 'overridden in local file'
+
+# Dependabot alerts configuration
+# Remove an item from the list to not see alerts of that severity
+dependabotAlertsConfiguration:
+  severity: [critical, high, medium, low]
