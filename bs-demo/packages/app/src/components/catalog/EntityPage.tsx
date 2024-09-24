@@ -87,6 +87,14 @@ import {
   isHarborAvailable,
 } from '@digitalist-open-cloud/backstage-plugin-harbor';
 
+import {
+  EntitySecurityInsightsContent,
+  isSecurityInsightsAvailable,
+  EntityGithubDependabotContent,
+  SecurityInsightsWidget,
+  DependabotAlertsWidget,
+} from '@roadiehq/backstage-plugin-security-insights';
+
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -183,6 +191,22 @@ const overviewContent = (
       </EntitySwitch>
     </Grid>
 
+    <EntitySwitch>
+      <EntitySwitch.Case if={isSecurityInsightsAvailable}>
+        <Grid item md={6}>
+          <SecurityInsightsWidget/>
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+    <EntitySwitch>
+      <EntitySwitch.Case if={isSecurityInsightsAvailable}>
+        <Grid item md={6}>
+          <DependabotAlertsWidget />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
     <Grid container spacing={3} alignItems="stretch">
         <EntitySwitch>
             <EntitySwitch.Case if={isGitlabAvailable}>
@@ -229,6 +253,20 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/harbor" title="Harbor" if={isHarborAvailable}>
       <HarborPage />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/security-insights" title="Security Insights"
+      // Uncomment the line below if you'd like to only show the tab on entities with the correct annotations already set
+      // if={isSecurityInsightsAvailable}
+    >
+      <EntitySecurityInsightsContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/dependabot" title="Dependabot"
+      // Uncomment the line below if you'd like to only show the tab on entities with the correct annotations already set
+      // if={isSecurityInsightsAvailable}
+    >
+      <EntityGithubDependabotContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
