@@ -42,6 +42,8 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
 
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 
+// vscode shows the below 2 lines as invalid - however, they seem to compile and work fine
+// just as they did before I updated backstage packages
 backend.add(gitlabPlugin);
 backend.add(catalogPluginGitlabFillerProcessorModule);
 
