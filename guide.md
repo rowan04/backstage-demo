@@ -1,6 +1,16 @@
 # Creating your own backstage app (simplified)
 Backstage docs link: https://backstage.io/docs/overview/what-is-backstage
 
+## Contents
+[Installs](https://github.com/rowan04/backstage-demo/blob/main/guide.md#installs)
+[Setup and Running](https://github.com/rowan04/backstage-demo/blob/main/guide.md#setup-and-running)
+[GitHub Authentication and Organisational Data](https://github.com/rowan04/backstage-demo/blob/main/guide.md#github-authentication-and-organisational-data)
+[Gitlab repository pulling](https://github.com/rowan04/backstage-demo/blob/main/guide.md#gitlab-repository-pulling)
+[Kubernetes plugin](https://github.com/rowan04/backstage-demo/blob/main/guide.md#kubernetes-plugin)
+[Harbor plugin](https://github.com/rowan04/backstage-demo/blob/main/guide.md#harbor-plugin)
+[Current error](https://github.com/rowan04/backstage-demo/blob/main/guide.md#current-error)
+[Updating Backstage dependencies](https://github.com/rowan04/backstage-demo/blob/main/guide.md#updating-backstage-dependencies)
+
 ## Installs
 To begin with, we will need to install a few things. Backstage documents all this at https://backstage.io/docs/getting-started/#prerequisites, but I've also outlined what you need below:
 
@@ -105,8 +115,9 @@ In the relevant catalog-info.yaml file, add `goharbor.io/repository-slug: projec
 
 See https://gitlab.ceda.ac.uk/cedadev/jasmin-accounts-deploy/-/blob/main/catalog-info.yaml for an example catalog-info.yaml file for a component with harbor annotations.
 
-## Current error:
-I currently receive the following error when following these steps I wrote myself. I have no idea why. Nothing online explains the error I have. Truly confusing. I wonder if its to do with trying to run 2 backstage apps on the same local area. Oh well:
+## Current error
+I currently receive the following error when following these steps I wrote myself. I have no idea why. Nothing online explains the error I have. Truly confusing.
+I wonder if its to do with trying to run 2 backstage apps on the same local area. Obviously my first intstance still runs normally. Oh well:
 
 ```
 [1] C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackendInitializer.ts:187
@@ -121,5 +132,18 @@ I currently receive the following error when following these steps I wrote mysel
 [1]     at BackstageBackend.start (C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackstageBackend.ts:42:11))
 ```
 
-## Extra details:
-To update everything, run (BE CAREFUL, WHO KNOWS WHAT MIGHT BREAK (could be nothing as well though)): `yarn backstage-cli versions:bump`
+## Updating Backstage dependencies
+To update all `@backstage` packages and dependencies, run: `yarn backstage-cli versions:bump`.
+
+Then, to update the other plugins and their dependencies, run the following:
+```
+yarn backstage-cli versions:bump --pattern '@{circleci,digitalist-open-cloud,immobiliarelabs,internal,material-ui,roadiehq,spotify,playwright,testing-library,types}/*'
+
+yarn backstage-cli versions:bump --pattern '{react,react-dom,react-router,react-router-dom,react-use,history,cross-env,concurrently,lerna,node-gyp,prettier,typescript,app,better-sqlite3,dockerode,pg,winston}'
+```
+
+Any new plugins will have to be added to one of the above two lists, if you want to update it and its dependencies.
+
+To update a single plugin/package/dependency, run in the following format: `yarn backstage-cli versions:bump --pattern '<INSERT_DEPENDENCY>'`
+
+For further information, see https://backstage.io/docs/getting-started/keeping-backstage-updated
