@@ -86,8 +86,6 @@ Then in ```packages/backend/src/index.ts``` add:
 ```
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
-
-backend.add(import('@backstage/plugin-catalog-backend/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 ```
 
@@ -95,7 +93,62 @@ You will probably want to hide your tokens within the `app-config.local.yaml` fi
 Be careful as any config written into the local file will overwrite what you have written in your normal `app-config.yaml` file.
 
 
-## Gitlab repository pulling
+## Gitlab repository pulling and plugin
+From your root directory, run the following:
+
+```
+yarn --cwd packages/backend add @backstage/plugin-catalog-backend-module-gitlab
+yarn --cwd packages/backend add @backstage/plugin-catalog-backend-module-gitlab-org
+yarn --cwd packages/app add @immobiliarelabs/backstage-plugin-gitlab
+yarn --cwd packages/backend add @immobiliarelabs/backstage-plugin-gitlab-backend
+```
+
+Then to `packages/backend/src/index.ts` add:
+
+```
+import {
+  gitlabPlugin,
+  catalogPluginGitlabFillerProcessorModule,
+} from '@immobiliarelabs/backstage-plugin-gitlab-backend';
+
+// GitLab plugin and repo scanning
+backend.add(gitlabPlugin);
+backend.add(catalogPluginGitlabFillerProcessorModule);
+backend.add(import('@backstage/plugin-catalog-backend-module-gitlab/alpha'));
+backend.add(import('@backstage/plugin-catalog-backend-module-gitlab-org'));
+```
+
+Then in app-config.yaml:
+
+In the `integrations:` section, add:
+
+```
+  gitlab:
+    - host: ${GITLAB_HOST}
+      token: ${GITLAB_TOKEN}
+      apiBaseUrl: ${GITLAB_API_BASE_URL}
+      rawBaseUrl: ${GITLAB_RAW_BASE_URL}
+```
+
+And in the `catalog: providers:` section add:
+
+```
+    # import GitLab repositories
+    gitlab:
+      cedadev:
+        host: gitlab.ceda.ac.uk
+        branch: main
+        fallbackBranch: master
+        group: cedadev
+        schedule:
+          frequency: { minutes: 60 }
+          timeout: { minutes: 30 }
+```
+
+You should now be pulling any GitLab repositories with a `catalog-info.yaml` file in their root directory.
+
+Finally, follow steps 1 and 2 at the following link: https://github.com/immobiliare/backstage-plugin-gitlab?tab=readme-ov-file#setup-frontend-plugin.
+This adds the GitLab plugin information into a components' entity page, found at `packages\app\src\components\catalog\EntityPage.tsx`.
 
 
 ## Kubernetes plugin
