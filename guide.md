@@ -9,13 +9,15 @@ Backstage docs link: https://backstage.io/docs/overview/what-is-backstage
 
 [GitHub Authentication and Organisational Data](https://github.com/rowan04/backstage-demo/blob/main/guide.md#github-authentication-and-organisational-data)
 
-[Gitlab repository pulling](https://github.com/rowan04/backstage-demo/blob/main/guide.md#gitlab-repository-pulling)
+[GitLab repository pulling](https://github.com/rowan04/backstage-demo/blob/main/guide.md#gitlab-repository-pulling)
+
+[GitHub and GitLab template scaffolding](https://github.com/rowan04/backstage-demo/blob/main/guide.md#gitlab-repository-pulling-and-plugin)
 
 [Kubernetes plugin](https://github.com/rowan04/backstage-demo/blob/main/guide.md#kubernetes-plugin)
 
 [Harbor plugin](https://github.com/rowan04/backstage-demo/blob/main/guide.md#harbor-plugin)
 
-[Current error](https://github.com/rowan04/backstage-demo/blob/main/guide.md#current-error)
+[Security Insights plugin](https://github.com/rowan04/backstage-demo/blob/main/guide.md#security-insights-plugin)
 
 [Updating Backstage dependencies](https://github.com/rowan04/backstage-demo/blob/main/guide.md#updating-backstage-dependencies)
 
@@ -64,10 +66,19 @@ auth:
             - resolver: emailLocalPartMatchingUserEntityName
 ```
 
+In the `integrations` section of `app-config.yaml` you will need to add a GitHub personal access token.
+The full integration looks like:
+```
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+```
+
 Then, you will need to pull users/groups from the cedadev github. Backstage will check the github account you signed in with exists in the cedadev users list, and if it does it will log you into the backstage instance.
 Follow https://backstage.io/docs/integrations/github/org/#installation, and do the following steps:
 
-From backstage root directory: ```yarn --cwd packages/backend add @backstage/plugin-catalog-backend-module-github-org```
+From backstage root directory: `yarn --cwd packages/backend add @backstage/plugin-catalog-backend-module-github-org`
 
 Then add the following config to `app-config.yaml`:
 ```
@@ -82,7 +93,7 @@ catalog:
         timeout: { minutes: 50 }
 ```
 
-Then in ```packages/backend/src/index.ts``` add:
+Then in `packages/backend/src/index.ts` add:
 ```
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
@@ -92,7 +103,7 @@ You will probably want to hide your tokens within the `app-config.local.yaml` fi
 Be careful as any config written into the local file will overwrite what you have written in your normal `app-config.yaml` file.
 
 
-## Gitlab repository pulling and plugin
+## GitLab repository pulling and plugin
 From your root directory, run the following:
 
 ```
@@ -217,24 +228,6 @@ From root directory, run `yarn --cwd packages/app add @roadiehq/backstage-plugin
 
 Follow this guide : https://github.com/RoadieHQ/roadie-backstage-plugins/tree/main/plugins/frontend/backstage-plugin-security-insights#plugin-setup
 which shows what code to add to the entity page, found at `packages\app\src\components\catalog\EntityPage.tsx`.
-
-
-## Current error
-I currently receive the following error when following these steps I wrote myself. I have no idea why. Nothing online explains the error I have. Truly confusing.
-I wonder if its to do with trying to run 2 backstage apps on the same local area. Obviously my first intstance still runs normally. Oh well:
-
-```
-[1] C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackendInitializer.ts:187
-[1]               throw new Error(
-[1]                     ^
-[1]
-[1]
-[1] Error: ExtensionPoint with ID 'catalog.processing' is already registered
-[1]     at BackendInitializer.#doStart (C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackendInitializer.ts:187:21)
-[1]     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-[1]     at BackendInitializer.start (C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackendInitializer.ts:150:5)
-[1]     at BackstageBackend.start (C:\Users\wll81845\Projects\2nd-bst\second-backstage\node_modules\@backstage\backend-app-api\src\wiring\BackstageBackend.ts:42:11))
-```
 
 
 ## Updating Backstage dependencies
