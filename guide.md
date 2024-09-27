@@ -69,7 +69,7 @@ Follow https://backstage.io/docs/integrations/github/org/#installation, and do t
 
 From backstage root directory: ```yarn --cwd packages/backend add @backstage/plugin-catalog-backend-module-github-org```
 
-Then add the following config to app-config.yaml:
+Then add the following config to `app-config.yaml`:
 ```
 catalog:
   providers:
@@ -85,7 +85,6 @@ catalog:
 Then in ```packages/backend/src/index.ts``` add:
 ```
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
-backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 ```
 
@@ -118,10 +117,9 @@ backend.add(import('@backstage/plugin-catalog-backend-module-gitlab/alpha'));
 backend.add(import('@backstage/plugin-catalog-backend-module-gitlab-org'));
 ```
 
-Then in app-config.yaml:
+Then in `app-config.yaml`:
 
 In the `integrations:` section, add:
-
 ```
   gitlab:
     - host: ${GITLAB_HOST}
@@ -131,7 +129,6 @@ In the `integrations:` section, add:
 ```
 
 And in the `catalog: providers:` section add:
-
 ```
     # import GitLab repositories
     gitlab:
@@ -149,6 +146,39 @@ You should now be pulling any GitLab repositories with a `catalog-info.yaml` fil
 
 Finally, follow steps 1 and 2 at the following link: https://github.com/immobiliare/backstage-plugin-gitlab?tab=readme-ov-file#setup-frontend-plugin.
 This adds the GitLab plugin information into a components' entity page, found at `packages\app\src\components\catalog\EntityPage.tsx`.
+
+
+## GitHub and GitLab template scaffolding
+In order to create repositories on GitHub and GitLab via the backstage scaffolder:
+
+Replace the `examples/` subdirectory with my custom `entities/` subdirectory, found at
+https://github.com/rowan04/backstage-demo/tree/main/bs-demo/entities.
+This contains a `template.yaml` file containing the templates, and many files which get auto added to any created
+repositories. The eastiest way will be to clone the backstage-demo repository, then copy the entities subdirectory
+and paste it in to the location of the `examples/` subdirectory.
+
+The in your root directory, run the following:
+```
+yarn --cwd packages/backend add @backstage/plugin-scaffolder-backend-module-github
+yarn --cwd packages/backend add @backstage/plugin-scaffolder-backend-module-gitlab
+```
+
+And then add the following in `packages/backend/src/index.ts`:
+```
+// template scaffolding
+backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
+backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
+```
+
+Then, in the `catalog:` section of `app-config.yaml`, add:
+```
+  locations:
+    # Add Custom Templates
+    - type: file
+      target: entities/template/template.yaml
+      rules:
+        - allow: [Template]
+```
 
 
 ## Kubernetes plugin
@@ -180,6 +210,13 @@ Install the backend, and then follow the configuration, from https://github.com/
 In the relevant catalog-info.yaml file, add `goharbor.io/repository-slug: projects/repository`. projects/repository could for example be jasmin-accounts/jasmin-idp.
 
 See https://gitlab.ceda.ac.uk/cedadev/jasmin-accounts-deploy/-/blob/main/catalog-info.yaml for an example catalog-info.yaml file for a component with harbor annotations.
+
+
+## Security Insights plugin
+From root directory, run `yarn --cwd packages/app add @roadiehq/backstage-plugin-security-insights`.
+
+Follow this guide : https://github.com/RoadieHQ/roadie-backstage-plugins/tree/main/plugins/frontend/backstage-plugin-security-insights#plugin-setup
+which shows what code to add to the entity page, found at `packages\app\src\components\catalog\EntityPage.tsx`.
 
 
 ## Current error
