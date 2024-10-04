@@ -27,7 +27,7 @@ foo@bar:~$ poetry install
 Then, activate the `pre-commit hooks` run:
 
 ``` shell
-foo@bar:~$ poetry run install pre-commit
+foo@bar:~$ poetry run pre-commit install
 ```
 
 When you commit, the following checks will be run:
